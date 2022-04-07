@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="link">
+        <a href="index.html">regular</a>
+        <br>
+
+        <a href="html-and-javascript.html">html with javascript</a>
+    </div>
+    <br>
+    <div class="container">
+        <label for="name">Username</label>
+        <input type="text" name="name" id="name" title="name">
+        <button>submit</button>
+    </div>
+    <br>
+    <small class="error"></small>
+    <div class="people">
+
+    </div>
+</body>
+<script>
+    const input = document.querySelector("input")
+    const people = document.querySelector(".people")
+    const error = document.querySelector(".error")
+    const submit = document.querySelector('button')
+
+    let allPeople = []
+    const fetchData = async () => {
+        try {
+
+            const response = await fetch('/api/people')
+            const data = await response.json()
+            // console.log(data.data)
+            const peoples = data.data
+            if (people) {
+                peoples.map(people => {
+                    allPeople.push(`<span> ${people.name} </span>`)
+                })
+                people.innerHTML = allPeople.join('\t')
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    fetchData()
+
+    submit.addEventListener("click", async (e) => {
+
+        e.preventDefault()
+        const value = input.value
+        console.log(value)
+        try {
+
+            const response = await fetch("/api/people", {
+                method: "POST",
+
+                // Adding body or contents to send
+                body: JSON.stringify({
+                    name: value,
+                }),
+
+                // Adding headers to the request
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            })
+            const data = await response.json()
+            console.log(response)
+            console.log(data)
+            const newPerson = data.person
+            const span = document.createElement("span")
+            span.innerHTML = `${newPerson}\t`
+            people.appendChild(span)
+            input.value = ""
+        } catch (error) {
+            console.log(error)
+        }
+    })
+</script>
+
+</html>

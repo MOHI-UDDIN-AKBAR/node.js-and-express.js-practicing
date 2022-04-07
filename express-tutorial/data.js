@@ -32,4 +32,22 @@ const products = [
     major: "CSE",
   },
 ];
-module.exports = products;
+const people = [
+  {
+    id: 1,
+    name: "arafat",
+  },
+  {
+    id: 2,
+    name: "rifat",
+  },
+  {
+    id: 3,
+    name: "samir",
+  },
+  {
+    id: 4,
+    name: "jayed",
+  },
+];
+module.exports = { products, people };
